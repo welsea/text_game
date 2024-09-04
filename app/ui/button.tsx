@@ -1,11 +1,12 @@
 "use client"
 import { useRef } from "react";
-import { DragItem, ItemTypes } from "./utils";
+import { DragItem, ItemTypes,DraggableButtonProps } from "./utils";
 import {  DragSourceMonitor, useDrag } from "react-dnd";
 
-const DraggableButton: React.FC<{ word: string; index: number }> = ({
+const DraggableButton: React.FC<DraggableButtonProps> = ({
     word,
     index,
+    isDropped
 }) => {
     const ref = useRef<HTMLButtonElement>(null);
 
@@ -19,6 +20,7 @@ const DraggableButton: React.FC<{ word: string; index: number }> = ({
         collect: (monitor: DragSourceMonitor) => ({
             isDragging: monitor.isDragging(),
         }),
+        canDrag:!isDropped,
     }));
     drag(ref);
     return (
@@ -29,6 +31,7 @@ const DraggableButton: React.FC<{ word: string; index: number }> = ({
                 opacity: isDragging ? 0.5 : 1,
                 cursor: "move",
             }}
+            disabled={isDropped}
         >
             {word}
         </button>

@@ -22,25 +22,17 @@ const GridBox: React.FC<GridBoxProps> = ({ index, content, onDrop }) => {
     );
 };
 
-export const Grid: React.FC<GridProps> = ({ rows, columns }) => {
-    const [grid, setGrid] = useState<(string | null)[]>(Array(rows * columns).fill(null));
-
-    const handleDrop = (index: number, item: DragItem) => {
-        const newGrid = [...grid];
-        newGrid[index] = item.word;
-        setGrid(newGrid);
-    };
-
+export const Grid: React.FC<GridProps> = ({ rows, columns,gridContent,onDrop }) => {
     return (
         <div
             className={`grid`}
             style={{
-                gridTemplateColumns: `repeat(${columns}, 3rem)`,
-                gridTemplateRows: `repeat(${rows}, 3rem)`,
+                gridTemplateColumns: `repeat(${columns}, 5rem)`,
+                gridTemplateRows: `repeat(${rows}, 5rem)`,
             }}
         >
-            {grid.map((content, index) => (
-                <GridBox key={index} index={index} content={content} onDrop={handleDrop} />
+            {gridContent.map((content, index) => (
+                <GridBox key={index} index={index} content={content} onDrop={onDrop} />
             ))}
         </div>
     );

@@ -22,4 +22,6 @@ export const ItemTypes = {
 export interface GridProps {
     rows: number;
     columns: number;
+    gridContent: (string | null)[];
+    onDrop: (index: number, item: DragItem) => void;
 }
