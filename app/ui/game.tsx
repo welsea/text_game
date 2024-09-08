@@ -1,7 +1,7 @@
 "use client"
 import TextArea from "./textarea";
 import { Grid } from "./gridArea";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 const Game: React.FC = () => {
     const text = `I met a traveller from an antique land,
     Who said—“Two vast and trunkless legs of stone
@@ -23,21 +23,19 @@ const Game: React.FC = () => {
     const [word, setWord] = useState("")
     const [index, setIndex] = useState(NaN)
 
-    function handlePutInGrid(i:number){
-        let tmp=[...grid]
-        tmp[i]=word
-        console.log("index: ",i)
-        console.log("word: ",word)
+    function handlePutInGrid(i: number) {
+        let tmp = [...grid]
+        tmp[i] = word
+        console.log("index: ", i)
+        console.log("word: ", word)
         setGrid(tmp)
     }
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div className="flex justify-around">
-                <TextArea text={text} handleWord={setWord}/>
-                <Grid rows={5} columns={10} gridData={grid} handlePutInGrid={handlePutInGrid}></Grid>
-            </div>
-        </DndProvider>
+        <div className="flex justify-around">
+            <TextArea text={text} handleWord={setWord} />
+            <Grid rows={5} columns={10} gridData={grid} handlePutInGrid={handlePutInGrid}></Grid>
+        </div>
     );
 };
 
