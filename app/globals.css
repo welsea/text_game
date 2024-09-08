@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
+.grid-box{
+    @apply hover:border hover:border-dashed hover:border-blue-400 bg-gray-100 items-center flex justify-center
+}

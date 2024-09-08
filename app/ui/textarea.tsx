@@ -1,18 +1,20 @@
-import DraggableButton from "./button";
+import Button from "./button";
 
-const TextArea: React.FC<{ text: string,droppedItems:Set<number>}> = ({ text,droppedItems }) => {
+function TextArea({text,handleWord}:{text:string, handleWord:any}){
     const wordsAndPunctuation = text.split(/(\b\w+\b)/g).filter(Boolean);
-
+    function handleSelect(word:string){
+        handleWord(word)
+    }
     return (
         <div className="w-4/12">
             {wordsAndPunctuation.map((item, index) => {
                 if (/^\w+$/.test(item)) {
                     return (
-                        <DraggableButton
+                        <Button
                             key={index}
                             word={item}
-                            index={index}
-                            isDropped={droppedItems.has(index)} 
+                            isSelect={false}
+                            handleSelect={handleSelect}
                         />
                     );
                 } else {

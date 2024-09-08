@@ -1,28 +1,21 @@
 "use client"
-import { DragItem, ItemTypes, GridBoxProps, GridProps } from "./utils";
-import { ReactNode, useRef,useState } from "react";
-import { useDrop } from "react-dnd";
 
-const GridBox: React.FC<GridBoxProps> = ({ index, content, onDrop }) => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    const [, drop] = useDrop<DragItem>(() => ({
-        accept: ItemTypes.BUTTON,
-        drop: (item) => onDrop(index, item),
-    }));
-    drop(ref)
-
+function GridBox({ index, handleSelectBox,word }:{index:number,handleSelectBox:any,word:string}){
     return (
         <div
-            ref={ref}
-            className="flex items-center justify-center bg-gray-100"
+            className="grid-box"
+            onClick={() => handleSelectBox(index)}
         >
-            {content}
+            {word}
         </div>
     );
 };
 
-export const Grid: React.FC<GridProps> = ({ rows, columns,gridContent,onDrop }) => {
+export function Grid({ rows, columns, handlePutInGrid, gridData }: { rows: number, columns: number, handlePutInGrid: any, gridData: Array<string> }) {
+    function handleSelectBox(index: number) {
+        handlePutInGrid(index)
+    }
+
     return (
         <div
             className={`grid`}
@@ -31,8 +24,8 @@ export const Grid: React.FC<GridProps> = ({ rows, columns,gridContent,onDrop }) 
                 gridTemplateRows: `repeat(${rows}, 5rem)`,
             }}
         >
-            {gridContent.map((content, index) => (
-                <GridBox key={index} index={index} content={content} onDrop={onDrop} />
+            {gridData.map((word: string, index: number) => (
+                <GridBox key={index} index={index} word={word} handleSelectBox={handleSelectBox} />
             ))}
         </div>
     );

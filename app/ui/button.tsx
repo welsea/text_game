@@ -1,41 +1,16 @@
 "use client"
-import { useRef } from "react";
-import { DragItem, ItemTypes,DraggableButtonProps } from "./utils";
-import {  DragSourceMonitor, useDrag } from "react-dnd";
+import { useRef, useState } from "react";
 
-const DraggableButton: React.FC<DraggableButtonProps> = ({
-    word,
-    index,
-    isDropped
-}) => {
-    const ref = useRef<HTMLButtonElement>(null);
-
-    const [{ isDragging }, drag] = useDrag<
-        DragItem,
-        void,
-        { isDragging: boolean }
-    >(() => ({
-        type: ItemTypes.BUTTON,
-        item: { word, index },
-        collect: (monitor: DragSourceMonitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-        canDrag:!isDropped,
-    }));
-    drag(ref);
+function Button({ word, isSelect,handleSelect}: { word: string, isSelect: boolean,handleSelect:any }) {
     return (
         <button
-            ref={ref}
-            style={{
-                marginRight: "4px",
-                opacity: isDragging ? 0.5 : 1,
-                cursor: "move",
-            }}
-            disabled={isDropped}
+            className= "focus:border focus:border-dashed focus:border-blue-400 px-1"
+            disabled={isSelect}
+            onClick={() => handleSelect(word)}
         >
             {word}
         </button>
     );
 };
 
-export default DraggableButton;
+export default Button;
