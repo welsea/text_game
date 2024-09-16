@@ -1,0 +1,128 @@
+body,
+html {
+    margin: 0;
+    overflow: scroll;
+    background-color: white;
+}
+
+.start-btn {
+    border: none;
+    background-color: rgb(137, 34, 34);
+    color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: lightblue;
+}
+
+.character {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    top: 50%;
+    left: 50%;
+}
+
+.platform {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background-color: green;
+}
+
+.set-game {
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+.text-button {
+    border: none;
+    background-color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.text-area {
+    background-color: white;
+    width: 25%;
+    height: fit-content;
+    padding: 1em 1em;
+    overflow: scroll;
+
+}
+
+.text-select {
+    text-decoration: underline;
+    color: rgb(49, 156, 153);
+}
+
+.text-disable {
+    color: #b2b2b2;
+}
+
+.map-area {
+    display: grid;
+    grid-template-columns: repeat(12, 4em);
+    grid-template-rows: repeat(8, 2em);
+    width: fit-content;
+    gap: 0;
+    background-color: white;
+    border: 1px solid #b2b2b2;
+}
+
+.grid-item {
+    background-color: #ffffff;
+    /* border: 1px solid #d3d1d1; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    color: #000;
+}
+
+
+.box-select {
+    border: 1px dashed rgb(54, 200, 229);
+}
+
+
+.btn-row {
+    margin-top: 10px;
+}
+
+.sm-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+.walk {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.jump {
+    background-color: rgb(194, 138, 70);
+    border: none;
+    color: white;
+}
+
+.ele {
+    background-color: rgb(70, 149, 194);
+    border: none;
+    color: white;
+}
+
+.danger {
+    background-color: rgb(112, 17, 17);
+    border: none;
+    color: white;
+}
