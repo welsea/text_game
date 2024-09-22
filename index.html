@@ -9,6 +9,9 @@
 </head>
 
 <body>
+  <div id="game" class="game">
+  </div>
+
   <div class="set-game">
     <div id="text_area" class="text-area"></div>
     <div>
@@ -23,22 +26,18 @@
       </div>
     </div>
 
-  </div>
-  <button class="start-btn">Start</button>
+    <button class="start-btn" id="start">Start</button>
 
 
-  <div id="game">
-    <div class="character" id="character"></div>
-    <div class="platform" style="top: 80%; left: 20%;"></div>
-    <div class="platform" style="top: 60%; left: 40%;"></div>
   </div>
 
   <!-- Link to the external JavaScript file -->
-  <script src="movement.js"></script>
   <script src="build-text.js"></script>
   <script src="build-map.js"></script>
   <script src="build-game.js"></script>
-
+  <script src="matter.js/matter.min.js" type="text/javascript"></script>
+  <script src="play.js"></script>
+  <script src="generateGame.js"></script>
 
 </body>
 

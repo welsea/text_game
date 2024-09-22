@@ -1,5 +1,4 @@
 const buttons = document.querySelectorAll('.func-btn'); // Select all small buttons
-
 // Loop through the buttons and add event listeners dynamically
 buttons.forEach(button => {
     const func = button.id.split('-')[1]; // Extracts the 'walk', 'jump', etc. from the button ID

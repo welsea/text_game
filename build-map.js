@@ -2,7 +2,7 @@ const containerMap = document.getElementById('map_area')
 function createBox(index) {
     const box = document.createElement('div')
     box.classList.add('grid-item')
-    box.id = `${index}-box`;
+    box.id = `${index+1}`;
     box.addEventListener('click', () => handleClickBox(box));
     return box
 }
