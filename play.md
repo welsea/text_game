@@ -1,4 +1,6 @@
+```js
 // Matter.js module aliases
+const { Engine, Render, Runner, Bodies, World, Body, Events } = Matter;
 
 
 // Create engine
@@ -136,3 +138,5 @@ Events.on(engine, 'beforeUpdate', () => {
 // Automatically run the physics simulation
 const runner = Runner.create();
 Runner.run(runner, engine);
+
+```
