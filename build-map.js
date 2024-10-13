@@ -23,7 +23,7 @@ function removeBoxSelectClass() {
 // Append buttons and spans to the container
 function populateBoxArea() {
     const fragment = document.createDocumentFragment();
-    [...Array(96)].forEach((_, index) => {
+    [...Array(144)].forEach((_, index) => {
         const element = createBox(index)
         fragment.appendChild(element);
     });
