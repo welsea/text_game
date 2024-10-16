@@ -1,14 +1,14 @@
 const { Engine, Render, Runner, Bodies, World, Body, Events } = Matter;
 
-const startBtn = document.getElementById("start");
-startBtn.addEventListener("click", () => generate());
+const testBtn = document.getElementById("test");
+testBtn.addEventListener("click", () => generate());
 
 function generate() {
     // Create engine
     const engine = Engine.create();
     const world = engine.world;
 
-    world.gravity.y = 1; // Earth-like gravity
+    world.gravity.y = 0.6; // Earth-like gravity
     const game = document.getElementById("game");
     game.innerHTML = "";
     // Create renderer
@@ -23,28 +23,28 @@ function generate() {
         },
     });
 
-    const ground = Bodies.rectangle(600, 360, 1200, 10, {
+    const ground = Bodies.rectangle(600, 360, 1200, 3, {
         isStatic: true,
         render: {
             fillStyle: "black",
             strokeStyle: "black",
         },
     });
-    const roof = Bodies.rectangle(600, 0, 1200, 10, {
+    const roof = Bodies.rectangle(600, 0, 1200, 3, {
         isStatic: true,
         render: {
             fillStyle: "black",
             strokeStyle: "black",
         },
     });
-    const leftWall = Bodies.rectangle(0, 180, 10, 360, {
+    const leftWall = Bodies.rectangle(0, 180, 3, 360, {
         isStatic: true,
         render: {
             fillStyle: "black",
             strokeStyle: "black",
         },
     });
-    const rightWall = Bodies.rectangle(1200, 180, 10, 360, {
+    const rightWall = Bodies.rectangle(1200, 180, 3, 360, {
         isStatic: true,
         render: {
             fillStyle: "black",
@@ -52,14 +52,22 @@ function generate() {
         },
     });
 
-    World.add(world, [ground, roof, leftWall, rightWall]);
+    const finishPoint = Bodies.rectangle(1195, 20, 3, 30, {
+        isStatic: true,
+        render: {
+            fillStyle: "green",
+            strokeStyle: "green",
+        },
+    })
+
+    World.add(world, [ground, roof, leftWall, rightWall, finishPoint]);
 
     const jumps = getPlatforms("jump", render);
     const eles = getPlatforms("ele", render);
     const dangers = getPlatforms("danger", render);
     const walks = getPlatforms("walk", render);
 
-    const character = Bodies.circle(400, 200, 10, { restitution: 0.5 });
+    const character = Bodies.circle(20, 330, 10, { restitution: 0.5 });
     World.add(world, character);
     World.add(world, jumps);
     World.add(world, eles);
@@ -70,7 +78,7 @@ function generate() {
     Render.run(render);
 
     const characterMoveSpeed = 0.005; // Horizontal speed
-    const jumpSpeed = -6;           // Jumping velocity
+    const jumpSpeed = -5;           // Jumping velocity
     const superJumpSpeed = -10
     let canJump = false;
     let canSuperJump = false
@@ -84,7 +92,6 @@ function generate() {
     let movedDistance = 0; // Distance moved in the current direction
     const moveSpeed = -1; // How fast the platform moves left
     let isCharacterOnPlatform = false; // Track if character is on the moving platform
-
     // functions
     // Detect collision with the ground, floating platform, or moving platform to allow jumping
     Events.on(engine, 'collisionStart', (event) => {
@@ -121,8 +128,16 @@ function generate() {
             if ((dangers.includes(pair.bodyA) && pair.bodyB === character) ||
                 (pair.bodyA === character && dangers.includes(pair.bodyB))) {
                 World.remove(world, character);
-                game.innerHTML=`
+                game.innerHTML = `
                     <div class="game-over">GAME OVER!</div>
+                `
+            }
+
+            if ((pair.bodyA===finishPoint && pair.bodyB === character) ||
+                (pair.bodyA === character && pair.bodyB===finishPoint)) {
+                World.remove(world, character);
+                game.innerHTML = `
+                    <div class="win">CONGRATULATIONS!</div>
                 `
             }
 
@@ -159,26 +174,55 @@ function generate() {
     })
 
     // keydown
+    let keys = {
+        a: false,
+        d: false,
+        w: false
+    };
+
     document.addEventListener('keydown', (event) => {
         const { key } = event;
-        if (key === 'a' || key === 'A') {
+
+        if ((key === 'a' || key === 'A') && !keys.a) {
+            keys.a = true;
             Body.applyForce(character, character.position, { x: -characterMoveSpeed, y: 0 });
         }
 
-        if (key === 'd' || key === 'D') {
+        if ((key === 'd' || key === 'D') && !keys.d) {
+            keys.d = true;
             Body.applyForce(character, character.position, { x: characterMoveSpeed, y: 0 });
         }
 
-        if (key === 'w' || key === 'W' && canJump) {
+        if ((key === 'w' || key === 'W') && canJump && !keys.w) {
+            keys.w = true;
             Body.setVelocity(character, { x: character.velocity.x, y: jumpSpeed });
             canJump = false; // Prevent multiple jumps
         }
-        if (key === 'w' || key === 'W' && canSuperJump) {
+
+        if ((key === 'w' || key === 'W') && canSuperJump && !keys.w) {
+            keys.w = true;
             Body.setVelocity(character, { x: character.velocity.x, y: superJumpSpeed });
             canJump = false; // Prevent multiple jumps
-            canSuperJump = false
+            canSuperJump = false;
         }
     });
+
+    document.addEventListener('keyup', (event) => {
+        const { key } = event;
+
+        if (key === 'a' || key === 'A') {
+            keys.a = false;
+        }
+
+        if (key === 'd' || key === 'D') {
+            keys.d = false;
+        }
+
+        if (key === 'w' || key === 'W') {
+            keys.w = false;
+        }
+    });
+
 
     const runner = Runner.create();
     Runner.run(runner, engine);
