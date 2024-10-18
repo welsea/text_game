@@ -3,6 +3,8 @@ const { Engine, Render, Runner, Bodies, World, Body, Events } = Matter;
 const testBtn = document.getElementById("test");
 testBtn.addEventListener("click", () => generate());
 
+
+
 function generate() {
     // Create engine
     const engine = Engine.create();
@@ -79,7 +81,7 @@ function generate() {
 
     const characterMoveSpeed = 0.005; // Horizontal speed
     const jumpSpeed = -5;           // Jumping velocity
-    const superJumpSpeed = -10
+    const superJumpSpeed = -7
     let canJump = false;
     let canSuperJump = false
 
@@ -87,7 +89,6 @@ function generate() {
     // for moving platform
     let isPlatformMoving = false;
     let moveDirection = 1; // 1 for left, -1 for right
-    let platformMoveDistance = 0;
     const maxMoveDistance = 100; // How far the platform moves to the left
     let movedDistance = 0; // Distance moved in the current direction
     const moveSpeed = -1; // How fast the platform moves left
@@ -106,7 +107,6 @@ function generate() {
                 (pair.bodyA === character && walks.includes(pair.bodyB))) {
                 canJump = true
                 canSuperJump = false
-
             }
 
             if ((jumps.includes(pair.bodyA) && pair.bodyB === character) ||
@@ -133,8 +133,8 @@ function generate() {
                 `
             }
 
-            if ((pair.bodyA===finishPoint && pair.bodyB === character) ||
-                (pair.bodyA === character && pair.bodyB===finishPoint)) {
+            if ((pair.bodyA === finishPoint && pair.bodyB === character) ||
+                (pair.bodyA === character && pair.bodyB === finishPoint)) {
                 World.remove(world, character);
                 game.innerHTML = `
                     <div class="win">CONGRATULATIONS!</div>
@@ -226,12 +226,21 @@ function generate() {
 
     const runner = Runner.create();
     Runner.run(runner, engine);
+
+
+    // publish
+    
+    const publish = document.createElement('button')
+    publish.innerText='publish'
+    publish.className='publish'
+    publish.id='publish'
+    game.appendChild(publish)
 }
 
 const colors = {
-    jump: "darkmagenta",
-    ele: "darkblue",
-    danger: "darkred",
+    jump: "#5a96b8",
+    ele: "#7e7ebf",
+    danger: "#ac4848",
     walk: "black",
 };
 
