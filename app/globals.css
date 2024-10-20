@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.link-btn{
+  @apply bg-green-900 text-white px-3 py-4 rounded-md text-center mr-2
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

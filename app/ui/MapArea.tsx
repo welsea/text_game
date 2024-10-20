@@ -26,7 +26,7 @@ export default function MapArea({
   return (
     <div id="map_area" className="map-area">
       {[...Array(144)].map((_, index: number) => {
-        const item = selected.find((ele) => ele.box === index + 1);
+        const item = selected.find((ele) => ele.box === index);
         return index === 132 ? (
           <div
             key={index}
@@ -49,8 +49,8 @@ export default function MapArea({
             className={`grid-item ${item ? item.platform.toLowerCase() : ""} ${
               clickBox === index + 1 ? "box-select" : ""
             }`}
-            onClick={() => handleClick(index + 1)}
-            onDoubleClick={() => handleCancel(index + 1)}
+            onClick={() => handleClick(index)}
+            onDoubleClick={() => handleCancel(index)}
           >
             {item ? item.word.split("-")[1] : " "}
           </div>
