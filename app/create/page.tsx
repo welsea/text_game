@@ -2,16 +2,28 @@
 import TextArea from "../ui/TextArea";
 import MapArea from "../ui/MapArea";
 import { useState } from "react";
-import { SelectItem } from "../data/utils";
-import { FunctionItem } from "../data/utils";
-import { generate } from "../data/generateGame";
+import { SelectItem } from "../lib/utils";
+import { FunctionItem } from "../lib/utils";
+import { generate } from "../lib/generateGame";
+import { getRoomStatus, publishMap } from "../lib/data";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams: {
+    name: string;
+  };
+}) {
+  const name = searchParams.name;
+  const router = useRouter();
+
   const [selectBox, setSelectBox] = useState<number>();
   const [selectWord, setSelectWord] = useState<string>();
   const [selected, setSelected] = useState<SelectItem[]>([]);
   const [character, setCharacter] = useState<string>();
   const characters: string[] = ["Traveler", "King"];
+  const [show, setShow] = useState<boolean>(false);
   const functions: FunctionItem[] = [
     {
       value: "Walk",
@@ -65,8 +77,28 @@ export default function Page() {
     setSelectWord(word);
   }
 
-  function handleTestMap(){
-      generate(selected,functions)
+  function handleTestMap() {
+    generate(selected, functions, "game");
+    setShow(true);
+  }
+
+  function handleAction(action: string) {
+    const fetchRoomStatus = async () => {
+      const status = await getRoomStatus(name);
+      if (status === action) {
+        if (action === "publish") {
+          const result = await publishMap(name, selected);
+          if (result === "ok") {
+            window.alert("Your map is published!");
+          }
+        } else {
+          router.push(`/play?name=${name}`)
+        }
+      } else {
+        window.alert("Waiting for the host!");
+      }
+    };
+    fetchRoomStatus();
   }
 
   return (
@@ -120,13 +152,33 @@ export default function Page() {
               );
             })}
 
-            <button className="test-btn" id="test" onClick={()=>handleTestMap()}>
+            <button
+              className="test-btn"
+              id="test"
+              onClick={() => handleTestMap()}
+            >
               Test your map!
             </button>
           </div>
         </div>
       </div>
       <div id="game" className="game"></div>
+      {show && (
+        <div className="w-4/5 m-[auto] flex justify-around">
+          <button
+            className="border border-orange-500 text-orange-600 px-2 py-1 rounded-md"
+            onClick={() => handleAction("publish")}
+          >
+            Publish your map!
+          </button>
+          <button
+            className="border border-green-800 text-green-800 px-2 py-1 rounded-md"
+            onClick={() => handleAction("play")}
+          >
+            Start play!
+          </button>
+        </div>
+      )}
     </main>
   );
 }

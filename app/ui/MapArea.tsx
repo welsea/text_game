@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SelectItem } from "../data/utils";
+import { SelectItem } from "../lib/utils";
 export default function MapArea({
   handleSelect,
   handleCancel,
@@ -47,7 +47,7 @@ export default function MapArea({
           <div
             key={index}
             className={`grid-item ${item ? item.platform.toLowerCase() : ""} ${
-              clickBox === index + 1 ? "box-select" : ""
+              clickBox === index  ? "box-select" : ""
             }`}
             onClick={() => handleClick(index)}
             onDoubleClick={() => handleCancel(index)}

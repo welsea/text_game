@@ -2,27 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .link-btn{
   @apply bg-green-900 text-white px-3 py-4 rounded-md text-center mr-2
 }
 
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+
 }
 
 @layer utilities {

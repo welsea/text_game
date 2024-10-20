@@ -1,14 +1,14 @@
 import { Engine, Render, Runner, Bodies, World, Body, Events } from "matter-js";
 import { FunctionItem, SelectItem } from "./utils";
 
-export function generate(selected: SelectItem[], functions: FunctionItem[]) {
+export function generate(selected: SelectItem[], functions: FunctionItem[],area:string) {
   // Create engine
   const engine = Engine.create();
   const world = engine.world;
 
   world.gravity.y = 0.6; // Earth-like gravity
   const game =
-    document.getElementById("game") || document.createElement("game");
+    document.getElementById(area) || document.createElement(area);
   game.innerHTML = "";
 
   // Create renderer

@@ -8,3 +8,11 @@ export interface FunctionItem {
   value: string;
   color: string;
 }
+
+export interface Player {
+  id: string;
+  name: string;
+  map?: string;
+  score?: number;
+  played?:number[]
+}
