@@ -1,8 +1,5 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
 export default function Home() {
-  const [enter, setEnter] = useState<boolean>(false);
   return (
     <main className="w-full h-screen pt-[10%] bg-[#aac0c0]">
       <div className="w-fit h-fit m-[auto] bg-white px-10 py-3 flex flex-col rounded-sm">

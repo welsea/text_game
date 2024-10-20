@@ -10,7 +10,7 @@ export function generate(selected: SelectItem[], functions: FunctionItem[]) {
   const game =
     document.getElementById("game") || document.createElement("game");
   game.innerHTML = "";
-  
+
   // Create renderer
   const render = Render.create({
     element: game,
@@ -196,7 +196,7 @@ export function generate(selected: SelectItem[], functions: FunctionItem[]) {
   });
 
   // keydown
-  let keys = {
+  const keys: any = {
     a: false,
     d: false,
     w: false,
@@ -264,7 +264,7 @@ function getPlatforms(
   functions: FunctionItem[]
 ) {
   // Initialize platforms as an empty array
-  let platforms: any[] = [];
+  const platforms: any[] = [];
 
   items.forEach((item) => {
     const id = item.box;
