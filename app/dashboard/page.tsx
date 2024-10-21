@@ -2,7 +2,7 @@
 import { getPlayers, deletePlayer, updateRoom, deleteRoom } from "../lib/data";
 import Create from "../ui/dashboard/create";
 import { Player, SelectItem } from "../lib/utils";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Map from "../ui/map";
 
 export default function Page({
@@ -18,7 +18,7 @@ export default function Page({
   const [players, setPlayers] = useState<Player[]>();
   const [roomStatus, setRoomStatus] = useState<string>();
   const [showMap, setShowMap] = useState<SelectItem[]>();
-  const [showCharacter, setShowCharacter] = useState<string>()
+  const [showCharacter, setShowCharacter] = useState<string>();
 
   function refreshPlay() {
     const refresh = async () => {
@@ -55,10 +55,13 @@ export default function Page({
     }
   }
 
-
   return (
     <main className="w-full h-screen px-10 p-5 text-center">
-      {!id && <Create />}
+      {!id && (
+        <Suspense>
+          <Create />
+        </Suspense>
+      )}
       <div>
         {id && (
           <div>
@@ -111,10 +114,12 @@ export default function Page({
                     <tr key={index}>
                       <td>{item.name}</td>
                       <td>
-                        <button onClick={() => {
-                          setShowMap(item.map?.map)
-                          setShowCharacter(item.map?.character)
-                        }}>
+                        <button
+                          onClick={() => {
+                            setShowMap(item.map?.map);
+                            setShowCharacter(item.map?.character);
+                          }}
+                        >
                           {item.map ? "published" : "-"}
                         </button>
                       </td>
@@ -135,7 +140,9 @@ export default function Page({
             </table>
           )}
         </div>
-        {showCharacter && <div className="mt-5">Character: {showCharacter}</div>}
+        {showCharacter && (
+          <div className="mt-5">Character: {showCharacter}</div>
+        )}
         {showMap && <Map selected={showMap} />}
       </div>
     </main>

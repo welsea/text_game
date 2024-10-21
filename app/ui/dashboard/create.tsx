@@ -32,14 +32,6 @@ export default function Create() {
     }
   }
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(searchParams);
-  //   if (name && id) {
-  //     params.set("id", id);
-  //     params.set("name", name);
-  //     replace(`/dashboard?${params.toString()}`);
-  //   }
-  // }, [name, id]);
 
   return (
     <div>
