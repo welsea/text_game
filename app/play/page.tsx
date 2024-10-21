@@ -21,7 +21,7 @@ export default function Page({
   const [map, setMap] = useState<any>();
   const [maps, setMaps] = useState<any>([]);
   const [mapIndex, setMapIndex] = useState<number>(0);
-  const [chance, setChance] = useState(3);
+  const [chance, setChance] = useState(5);
   const [player, setPlayer] = useState<Player>();
   const [result, setResult] = useState<string>();
   const [finishAll, setFinishAll] = useState<boolean>(false);
