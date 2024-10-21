@@ -18,10 +18,11 @@ export default function Home() {
       const join=async()=>{
         joinRoom(name,room).then((result)=>{
           if(result.message){
-            setMessage(message)
+            setMessage(result.message)
           }else{
             params.set('id',result)
             params.set('name',name)
+            params.set('room',room)
             replace(`/create?${params.toString()}`);
           }
         })
@@ -32,7 +33,7 @@ export default function Home() {
   return (
     <main className="w-full h-screen pt-[10%] ">
       <div className="w-fit h-fit m-[auto] bg-white px-10 py-3 flex flex-col rounded-sm">
-        <div>{message}</div>
+        <div className="text-red-900 text-center">{message}</div>
         <input
           type="text"
           className="border border-gray-300 rounded-md px-3 py-3 mt-2"

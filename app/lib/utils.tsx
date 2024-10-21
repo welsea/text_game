@@ -12,7 +12,10 @@ export interface FunctionItem {
 export interface Player {
   id: string;
   name: string;
-  map?: string;
+  map?: {
+    character: string;
+    map: SelectItem[];
+  };
   score?: number;
-  played?:number[]
+  played?: number[];
 }

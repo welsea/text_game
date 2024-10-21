@@ -1,14 +1,31 @@
 import { Engine, Render, Runner, Bodies, World, Body, Events } from "matter-js";
 import { FunctionItem, SelectItem } from "./utils";
 
-export function generate(selected: SelectItem[], functions: FunctionItem[],area:string) {
+export function generate(selected: SelectItem[], area: string) {
+  const functions: FunctionItem[] = [
+    {
+      value: "Walk",
+      color: "black",
+    },
+    {
+      value: "Jump",
+      color: "#5a96b8",
+    },
+    {
+      value: "Elevator",
+      color: "#7e7ebf",
+    },
+    {
+      value: "Danger",
+      color: "#ac4848",
+    },
+  ];
   // Create engine
   const engine = Engine.create();
   const world = engine.world;
 
   world.gravity.y = 0.6; // Earth-like gravity
-  const game =
-    document.getElementById(area) || document.createElement(area);
+  const game = document.getElementById(area) || document.createElement(area);
   game.innerHTML = "";
 
   // Create renderer
@@ -150,6 +167,7 @@ export function generate(selected: SelectItem[], functions: FunctionItem[],area:
         (pair.bodyA === character && dangers.includes(pair.bodyB))
       ) {
         World.remove(world, character);
+        
         game.innerHTML = `
           <div class="game-over">GAME OVER!</div>
         `;

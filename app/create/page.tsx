@@ -7,15 +7,18 @@ import { FunctionItem } from "../lib/utils";
 import { generate } from "../lib/generateGame";
 import { getRoomStatus, publishMap } from "../lib/data";
 import { useRouter } from "next/navigation";
+import Map from "../ui/map";
 
 export default function Page({
   searchParams,
 }: {
   searchParams: {
     name: string;
+    room: string;
   };
 }) {
   const name = searchParams.name;
+  const room = searchParams.room;
   const router = useRouter();
 
   const [selectBox, setSelectBox] = useState<number>();
@@ -78,7 +81,6 @@ export default function Page({
   }
 
   function handleTestMap() {
-    generate(selected, functions, "game");
     setShow(true);
   }
 
@@ -87,12 +89,16 @@ export default function Page({
       const status = await getRoomStatus(name);
       if (status === action) {
         if (action === "publish") {
-          const result = await publishMap(name, selected);
-          if (result === "ok") {
-            window.alert("Your map is published!");
+          if (character) {
+            const result = await publishMap(name, character, selected);
+            if (result === "ok") {
+              window.alert("Your map is published!");
+            }
+          } else {
+            window.alert("Select a character!");
           }
         } else {
-          router.push(`/play?name=${name}`)
+          router.push(`/play?name=${name}&room=${room}`);
         }
       } else {
         window.alert("Waiting for the host!");
@@ -162,7 +168,7 @@ export default function Page({
           </div>
         </div>
       </div>
-      <div id="game" className="game"></div>
+      {show && <Map selected={selected} />}
       {show && (
         <div className="w-4/5 m-[auto] flex justify-around">
           <button

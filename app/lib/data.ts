@@ -6,14 +6,15 @@ import { sql } from "@vercel/postgres";
 import { Player } from "./utils";
 
 export async function getPlayers(name: string) {
-  const data = await sql`SELECT id,name,map,score,played FROM game_users WHERE room = ${name};`;
+  const data =
+    await sql`SELECT id,name,map,score,played FROM game_users WHERE room = ${name};`;
   const result: Player[] = data.rows.map((item: any) => {
     return {
       id: item.id,
       name: item.name,
       map: item.map,
       score: item.score,
-      played:item.played
+      played: item.played,
     };
   });
   return result;
@@ -46,7 +47,6 @@ export async function generateRoom(name: string) {
 
 export async function joinRoom(name: string, room: string) {
   try {
-    console.log(" called");
     const existingRoom = await sql`
       SELECT EXISTS(SELECT id FROM rooms WHERE name=${room})
     `;
@@ -65,8 +65,8 @@ export async function joinRoom(name: string, room: string) {
       };
     } else {
       const result = await sql`
-      INSERT INTO game_users (name, room)
-      VALUES (${name}, ${room})
+      INSERT INTO game_users (name, room,score)
+      VALUES (${name}, ${room},0)
       RETURNING id;
     `;
       return result.rows[0].id;
@@ -123,12 +123,15 @@ export async function deleteRoom(room: string) {
   }
 }
 
-export async function publishMap(name: string, value: any) {
+export async function publishMap(name: string, character: string, value: any) {
   try {
-    const map = JSON.stringify(value);
+    const game = {
+      character: character,
+      map: value,
+    };
     await sql`
     UPDATE game_users
-    SET map=${map}
+    SET map=${JSON.stringify(game)}
     WHERE name = ${name};
 `;
 
@@ -138,4 +141,80 @@ export async function publishMap(name: string, value: any) {
   }
 }
 
-export async function scoreAdd() {}
+export async function getPlayer(name: string, room: string) {
+  try {
+    const userData =
+      await sql`SELECT id,score,played,name FROM game_users WHERE name=${name} AND room = ${room}`;
+
+    return userData.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getMaps(room: string) {
+  try {
+    const results =
+      await sql`SELECT map,name FROM game_users WHERE room = ${room}`;
+    const maps = results.rows.filter((item) => item.map);
+    return maps;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateScore(name: string, mapName: string) {
+  try {
+    // mapName: who's map
+    const played =
+      await sql` SELECT played FROM game_users WHERE name = ${name}`;
+    if (played.rows[0].played && played.rows[0].played.includes(mapName)) {
+      const score =
+        await sql`SELECT score FROM game_users WHERE name = ${name}`;
+      return {
+        score: score.rows[0].score,
+        played: played.rows[0].played,
+      };
+    }
+
+    await sql`
+    UPDATE game_users
+    SET score = score + 1
+    WHERE name = ${name};
+`;
+    await sql`
+    UPDATE game_users
+    SET played = array_append(played,${mapName})
+    WHERE name = ${name};
+`;
+    const updated =
+      await sql`SELECT score,played FROM game_users WHERE name=${name}`;
+    console.log(updated);
+
+    return {
+      score: updated.rows[0].score,
+      played: updated.rows[0].played,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updatePlayed(name: string, mapName: string) {
+  try {
+    const played =
+      await sql` SELECT played FROM game_users WHERE name = ${name}`;
+    if (played.rows[0].played && played.rows[0].played.includes(mapName))
+      return played.rows[0].played;
+    await sql`
+      UPDATE game_users
+      SET played = array_append(played,${mapName})
+      WHERE name = ${name};
+    `;
+    const newPlayed =
+      await sql` SELECT played FROM game_users WHERE name = ${name}`;
+    return newPlayed.rows[0].played;
+  } catch (error) {
+    console.log(error);
+  }
+}

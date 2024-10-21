@@ -13,7 +13,7 @@ async function seedPlayers() {
       name VARCHAR(255) NOT NULL UNIQUE,
       room VARCHAR(255) NOT NULL,
       score BIGINT,
-      played INTEGER[],
+      played VARCHAR(255)[],
       map JSON
     );
   `;
@@ -36,7 +36,7 @@ async function seedRooms() {
 export async function GET() {
   try {
     await client.sql`BEGIN`;
-    await seedRooms();
+    // await seedPlayers();
     await client.sql`COMMIT`;
 
     return Response.json({ message: "Database seeded successfully" });

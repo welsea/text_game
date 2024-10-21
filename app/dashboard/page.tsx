@@ -1,8 +1,9 @@
 "use client";
 import { getPlayers, deletePlayer, updateRoom, deleteRoom } from "../lib/data";
 import Create from "../ui/dashboard/create";
-import { Player } from "../lib/utils";
+import { Player, SelectItem } from "../lib/utils";
 import { useState } from "react";
+import Map from "../ui/map";
 
 export default function Page({
   searchParams,
@@ -16,6 +17,8 @@ export default function Page({
   const name = searchParams?.name;
   const [players, setPlayers] = useState<Player[]>();
   const [roomStatus, setRoomStatus] = useState<string>();
+  const [showMap, setShowMap] = useState<SelectItem[]>();
+  const [showCharacter, setShowCharacter] = useState<string>()
 
   function refreshPlay() {
     const refresh = async () => {
@@ -46,11 +49,12 @@ export default function Page({
     if (name) {
       const update = async () => {
         await updateRoom(status, name);
-        setRoomStatus(status)
+        setRoomStatus(status);
       };
       update();
     }
   }
+
 
   return (
     <main className="w-full h-screen px-10 p-5 text-center">
@@ -58,7 +62,10 @@ export default function Page({
       <div>
         {id && (
           <div>
-            <div>Now you can share the room: {name}{roomStatus?`, status: allow ${roomStatus}`:''}</div>
+            <div>
+              Now you can share the room: {name}
+              {roomStatus ? `, status: allow ${roomStatus}` : ""}
+            </div>
             <button
               className="border border-gray-300 rounded-md px-2 py-1 mr-2"
               onClick={() => refreshPlay()}
@@ -103,9 +110,16 @@ export default function Page({
                   return (
                     <tr key={index}>
                       <td>{item.name}</td>
-                      <td>{item.map ? 'published' : "-"}</td>
+                      <td>
+                        <button onClick={() => {
+                          setShowMap(item.map?.map)
+                          setShowCharacter(item.map?.character)
+                        }}>
+                          {item.map ? "published" : "-"}
+                        </button>
+                      </td>
                       <td>{item.score ? item.score : 0}</td>
-                      <td>{item.played ? item.played.join(",") : "none"}</td>
+                      <td>{item.played ? item.played.length : "none"}</td>
                       <td>
                         <button
                           className="border-non px-2 text-red-800 ml-2"
@@ -121,6 +135,8 @@ export default function Page({
             </table>
           )}
         </div>
+        {showCharacter && <div className="mt-5">Character: {showCharacter}</div>}
+        {showMap && <Map selected={showMap} />}
       </div>
     </main>
   );
