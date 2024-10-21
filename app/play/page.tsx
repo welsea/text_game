@@ -26,6 +26,7 @@ export default function Page({
   const [result, setResult] = useState<string>();
   const [finishAll, setFinishAll] = useState<boolean>(false);
   const [showSelect, setShowSelect] = useState(false);
+  const [message, setMessage] = useState<string>()
 
   useEffect(() => {
     const fetchPlayer = async () => {
@@ -61,7 +62,6 @@ export default function Page({
   useEffect(() => {
     const finish = async () => {
       if (result === "skip" && player) {
-        console.log("skip");
         const newData = await updatePlayed(name, map.name);
         let p = player;
         p.played = newData.played;
@@ -78,15 +78,30 @@ export default function Page({
     const finish = async () => {
       if (result === "win" && player) {
         if (character) {
-          const newData = await updateScore(name, map.name);
-          if (newData) {
-            console.log("win");
-
+          if (character === map.map.character) {
+            const newData = await updateScore(name, map.name);
+            if (newData) {
+              let p = player;
+              p.score = newData.score;
+              p.played = newData.played;
+              setMessage('You Won! Now wait for the next map.')
+              setTimeout(()=>{
+                setPlayer(p);
+                updateMap();
+                setMessage(undefined)
+              },5000)
+            }
+          } else {
+            const newData = await updatePlayed(name, map.name);
             let p = player;
-            p.score = newData.score;
             p.played = newData.played;
-            setPlayer(p);
-            updateMap();
+
+            setMessage('Wrong character! Now wait for the next map.')
+            setTimeout(()=>{
+              setPlayer(p);
+              updateMap();
+              setMessage(undefined)
+            },5000)
           }
         }
       }
@@ -100,7 +115,10 @@ export default function Page({
         <div className="flex justify-between w-3/5 m-[auto] pt-5 ">
           <div>Player: {player.name}</div>
           <div>Score: {player.score ? player.score : 0}</div>
-          <div>Played: {player.played?.length ? player.played.length : 0} / {maps.length}</div>
+          <div>
+            Played: {player.played?.length ? player.played.length : 0} /{" "}
+            {maps.length}
+          </div>
         </div>
       )}
       {finishAll && (
@@ -156,6 +174,8 @@ export default function Page({
                 })}
               </div>
             )}
+
+            {message && <div className="text-center">{message}</div>}
 
             {map && (
               <Map selected={map.map.map} result={setResult} key={chance} />
