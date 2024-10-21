@@ -19,6 +19,7 @@ export default function Page({
   const [roomStatus, setRoomStatus] = useState<string>();
   const [showMap, setShowMap] = useState<SelectItem[]>();
   const [showCharacter, setShowCharacter] = useState<string>();
+  const [fresh, setFresh] = useState<number>(0);
 
   function refreshPlay() {
     const refresh = async () => {
@@ -118,6 +119,7 @@ export default function Page({
                           onClick={() => {
                             setShowMap(item.map?.map);
                             setShowCharacter(item.map?.character);
+                            setFresh((pre) => pre + 1);
                           }}
                         >
                           {item.map ? "published" : "-"}
@@ -143,7 +145,7 @@ export default function Page({
         {showCharacter && (
           <div className="mt-5">Character: {showCharacter}</div>
         )}
-        {showMap && <Map selected={showMap} />}
+        {showMap && <Map key={fresh} selected={showMap} />}
       </div>
     </main>
   );

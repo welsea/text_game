@@ -26,6 +26,7 @@ export default function Page({
   const [selected, setSelected] = useState<SelectItem[]>([]);
   const [character, setCharacter] = useState<string>();
   const characters: string[] = ["Traveler", "King"];
+  const [fresh, setFresh] = useState<number>(0)
   const [show, setShow] = useState<boolean>(false);
   const functions: FunctionItem[] = [
     {
@@ -82,6 +83,7 @@ export default function Page({
 
   function handleTestMap() {
     setShow(true);
+    setFresh(pre=>pre+1)
   }
 
   function handleAction(action: string) {
@@ -168,7 +170,7 @@ export default function Page({
           </div>
         </div>
       </div>
-      {show && <Map selected={selected} />}
+      {show && <Map key={fresh} selected={selected} />}
       {show && (
         <div className="w-4/5 m-[auto] flex justify-around">
           <button
