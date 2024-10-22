@@ -95,7 +95,7 @@ export default function Page({
                 setPlayer(p);
                 updateMap();
                 setMessage(undefined);
-              }, 5000);
+              }, 3000);
             }
           } else {
             const newData = await updatePlayed(name, map.name);
@@ -107,7 +107,7 @@ export default function Page({
               setPlayer(p);
               updateMap();
               setMessage(undefined);
-            }, 5000);
+            }, 3000);
           }
         }
       }
