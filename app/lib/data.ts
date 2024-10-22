@@ -204,6 +204,7 @@ export async function updatePlayed(name: string, mapName: string) {
   try {
     const played =
       await sql` SELECT played FROM game_users WHERE name = ${name}`;
+
     if (played.rows[0].played && played.rows[0].played.includes(mapName))
       return played.rows[0].played;
     await sql`

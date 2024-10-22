@@ -26,7 +26,8 @@ export default function Page({
   const [result, setResult] = useState<string>();
   const [finishAll, setFinishAll] = useState<boolean>(false);
   const [showSelect, setShowSelect] = useState(false);
-  const [message, setMessage] = useState<string>()
+  const [message, setMessage] = useState<string>();
+  const [canSelect, setCanSelect] = useState(true);
 
   useEffect(() => {
     const fetchPlayer = async () => {
@@ -41,22 +42,27 @@ export default function Page({
   }, [name, room]);
 
   useEffect(() => {
-    setChance(3);
+    setChance(5);
     setResult("");
-    const fetchPlayer = async () => {
-      const p = await getPlayer(name, room);
-      console.log(p);
-      setPlayer(p as Player);
-    };
-    fetchPlayer();
+    // const fetchPlayer = async () => {
+    //   const p = await getPlayer(name, room);
+    //   setPlayer(p as Player);
+    // };
+    // fetchPlayer();
   }, [map]);
 
   function updateMap() {
-    console.log("update map");
-    if (mapIndex + 1 < maps.length) setMap(maps[mapIndex + 1]);
-    else setFinishAll(true);
-    setMapIndex((pre) => pre + 1);
-    setChance(3);
+    if (mapIndex + 1 < maps.length) {
+      setMap(maps[mapIndex + 1]);
+      setMapIndex((pre) => pre + 1);
+    } else {
+      setFinishAll(true);
+      setMap(maps[0]);
+      setMapIndex(0);
+    }
+    setCanSelect(true)
+    setCharacter('')
+    setShowSelect(false)
   }
 
   useEffect(() => {
@@ -64,7 +70,7 @@ export default function Page({
       if (result === "skip" && player) {
         const newData = await updatePlayed(name, map.name);
         let p = player;
-        p.played = newData.played;
+        p.played = newData;
         setPlayer(p);
         updateMap();
       } else if (result === "win") {
@@ -84,24 +90,24 @@ export default function Page({
               let p = player;
               p.score = newData.score;
               p.played = newData.played;
-              setMessage('You Won! Now wait for the next map.')
-              setTimeout(()=>{
+              setMessage("You Won! Now wait for the next map.");
+              setTimeout(() => {
                 setPlayer(p);
                 updateMap();
-                setMessage(undefined)
-              },5000)
+                setMessage(undefined);
+              }, 5000);
             }
           } else {
             const newData = await updatePlayed(name, map.name);
             let p = player;
             p.played = newData.played;
 
-            setMessage('Wrong character! Now wait for the next map.')
-            setTimeout(()=>{
+            setMessage("Wrong character! Now wait for the next map.");
+            setTimeout(() => {
               setPlayer(p);
               updateMap();
-              setMessage(undefined)
-            },5000)
+              setMessage(undefined);
+            }, 5000);
           }
         }
       }
@@ -116,8 +122,7 @@ export default function Page({
           <div>Player: {player.name}</div>
           <div>Score: {player.score ? player.score : 0}</div>
           <div>
-            Played: {player.played?.length ? player.played.length : 0} /{" "}
-            {maps.length}
+            Played: {player.played} /{maps.length}
           </div>
         </div>
       )}
@@ -166,7 +171,11 @@ export default function Page({
                         type="radio"
                         className="hidden"
                         value={item}
-                        onChange={() => setCharacter(item)}
+                        onChange={() => {
+                          setCharacter(item);
+                          setCanSelect(false);
+                        }}
+                        disabled={!canSelect}
                       />
                       <span>{item}</span>
                     </label>
