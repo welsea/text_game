@@ -60,9 +60,9 @@ export default function Page({
       setMap(maps[0]);
       setMapIndex(0);
     }
-    setCanSelect(true)
-    setCharacter('')
-    setShowSelect(false)
+    setCanSelect(true);
+    setCharacter("");
+    setShowSelect(false);
   }
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export default function Page({
           <div>Player: {player.name}</div>
           <div>Score: {player.score ? player.score : 0}</div>
           <div>
-            Played: {player.played} /{maps.length}
+            Played: {player.played ? player.played.length : 0} /{maps.length}
           </div>
         </div>
       )}
