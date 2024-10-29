@@ -4,7 +4,6 @@ import MapArea from "../ui/MapArea";
 import { useState } from "react";
 import { SelectItem } from "../lib/utils";
 import { FunctionItem } from "../lib/utils";
-import { generate } from "../lib/generateGame";
 import { getRoomStatus, publishMap } from "../lib/data";
 import { useRouter } from "next/navigation";
 import Map from "../ui/map";

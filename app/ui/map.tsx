@@ -162,9 +162,9 @@ export default function Map({
     Runner.run(Runner.create(), engine);
     Render.run(render);
 
-    const characterMoveSpeed = 0.005; // Horizontal speed
-    const jumpSpeed = -5; // Jumping velocity
-    const superJumpSpeed = -7;
+    const characterMoveSpeed = 0.002; // Horizontal speed
+    const jumpSpeed = -4; // Jumping velocity
+    const superJumpSpeed = -6;
     let canJump = false;
     let canSuperJump = false;
 
@@ -273,12 +273,15 @@ export default function Map({
       d: false,
       w: false,
     };
+    let hitA = 0;
+    let hitD = 0;
 
     document.addEventListener("keydown", (event) => {
       const { key } = event;
 
       if ((key === "a" || key === "A") && !keys.a) {
-        keys.a = true;
+        hitA = hitA + 1;
+        if (hitA >= 10) keys.a = true;
         Body.applyForce(character, character.position, {
           x: -characterMoveSpeed,
           y: 0,
@@ -286,7 +289,8 @@ export default function Map({
       }
 
       if ((key === "d" || key === "D") && !keys.d) {
-        keys.d = true;
+        hitD = hitD + 1;
+        if (hitD >= 10) keys.d = true;
         Body.applyForce(character, character.position, {
           x: characterMoveSpeed,
           y: 0,
@@ -315,10 +319,12 @@ export default function Map({
 
       if (key === "a" || key === "A") {
         keys.a = false;
+        hitA = 0;
       }
 
       if (key === "d" || key === "D") {
         keys.d = false;
+        hitD = 0;
       }
 
       if (key === "w" || key === "W") {
