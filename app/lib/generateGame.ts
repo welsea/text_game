@@ -179,7 +179,7 @@ export function generate(selected: SelectItem[], area: string) {
       ) {
         World.remove(world, character);
         game.innerHTML = `
-          <div class="win">AT ME?!?! :(</div>
+          <div class="win">AT ME?!?! :( </div>
         `;
       }
     });
