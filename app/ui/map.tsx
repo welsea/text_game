@@ -232,7 +232,7 @@ export default function Map({
         ) {
           World.remove(world, character);
           game.innerHTML = `
-          <div class="win">AT ME?!?! :( </div>
+          <div class="win">CONGRATULATIONS !!</div>
         `;
           if (result) result("win");
         }
