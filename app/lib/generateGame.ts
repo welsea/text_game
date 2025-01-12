@@ -24,7 +24,7 @@ export function generate(selected: SelectItem[], area: string) {
   const engine = Engine.create();
   const world = engine.world;
 
-  world.gravity.y = 0.6; // Earth-like gravity
+  world.gravity.y = 0.8; // Earth-like gravity
   const game = document.getElementById(area) || document.createElement(area);
   game.innerHTML = "";
 
@@ -110,8 +110,8 @@ export function generate(selected: SelectItem[], area: string) {
   Runner.run(Runner.create(), engine);
   Render.run(render);
 
-  const characterMoveSpeed = 0.005; // Horizontal speed
-  const jumpSpeed = -5; // Jumping velocity
+  const characterMoveSpeed = 0.05; // Horizontal speed
+  const jumpSpeed = -6; // Jumping velocity
   const superJumpSpeed = -7;
   let canJump = false;
   let canSuperJump = false;
