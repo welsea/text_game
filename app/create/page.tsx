@@ -1,21 +1,22 @@
 "use client";
 import TextArea from "../ui/TextArea";
 import MapArea from "../ui/MapArea";
-import { useState } from "react";
+import { useState, use } from "react";
 import { SelectItem } from "../lib/utils";
 import { FunctionItem } from "../lib/utils";
 import { getRoomStatus, publishMap } from "../lib/data";
 import { useRouter } from "next/navigation";
 import Map from "../ui/map";
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams: {
-    name: string;
-    room: string;
-  };
-}) {
+export default function Page(
+  props: {
+    searchParams: Promise<{
+      name: string;
+      room: string;
+    }>;
+  }
+) {
+  const searchParams = use(props.searchParams);
   const name = searchParams.name;
   const room = searchParams.room;
   const router = useRouter();

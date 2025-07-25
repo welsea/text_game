@@ -1,35 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Player, SelectItem } from "../lib/utils";
 import { getMaps, getPlayer, updatePlayed, updateScore } from "../lib/data";
 import Map from "../ui/map";
 import Playerinfo from "../ui/playerinfo";
-export default function Page({
-	searchParams,
-}: {
-	searchParams: {
-		name: string;
-		room: string;
-	};
-}) {
-	const name = searchParams.name;
-	const room = searchParams.room;
-	const characters: string[] = ["Traveler", "King"];
+export default function Page(
+    props: {
+        searchParams: Promise<{
+            name: string;
+            room: string;
+        }>;
+    }
+) {
+    const searchParams = use(props.searchParams);
+    const name = searchParams.name;
+    const room = searchParams.room;
+    const characters: string[] = ["Traveler", "King"];
 
-	const [character, setCharacter] = useState<string>();
-	const [map, setMap] = useState<any>();
-	const [maps, setMaps] = useState<any>([]);
-	const [mapIndex, setMapIndex] = useState<number>(0);
-	const [chance, setChance] = useState(5);
-	const [player, setPlayer] = useState<Player>();
-	const [result, setResult] = useState<string>();
-	const [finishAll, setFinishAll] = useState<boolean>(false);
-	const [showSelect, setShowSelect] = useState(false);
-	const [message, setMessage] = useState<string>();
-	const [canSelect, setCanSelect] = useState(true);
+    const [character, setCharacter] = useState<string>();
+    const [map, setMap] = useState<any>();
+    const [maps, setMaps] = useState<any>([]);
+    const [mapIndex, setMapIndex] = useState<number>(0);
+    const [chance, setChance] = useState(5);
+    const [player, setPlayer] = useState<Player>();
+    const [result, setResult] = useState<string>();
+    const [finishAll, setFinishAll] = useState<boolean>(false);
+    const [showSelect, setShowSelect] = useState(false);
+    const [message, setMessage] = useState<string>();
+    const [canSelect, setCanSelect] = useState(true);
 
-	useEffect(() => {
+    useEffect(() => {
 		const fetchPlayer = async () => {
 			const p = await getPlayer(name, room);
 			setPlayer(p as Player);
@@ -42,7 +43,7 @@ export default function Page({
 		fetchPlayer();
 	}, [name, room]);
 
-	useEffect(() => {
+    useEffect(() => {
 		setChance(5);
 		setResult("");
 		// const fetchPlayer = async () => {
@@ -52,7 +53,7 @@ export default function Page({
 		// fetchPlayer();
 	}, [map]);
 
-	function updateMap() {
+    function updateMap() {
 		if (mapIndex + 1 < maps.length) {
 			setMap(maps[mapIndex + 1]);
 			setMapIndex((pre) => pre + 1);
@@ -66,7 +67,7 @@ export default function Page({
 		setShowSelect(false);
 	}
 
-	useEffect(() => {
+    useEffect(() => {
 		const finish = async () => {
 			if (result === "skip" && player) {
 				const newData = await updatePlayed(name, map.name);
@@ -81,7 +82,7 @@ export default function Page({
 		finish();
 	}, [result]);
 
-	useEffect(() => {
+    useEffect(() => {
 		const finish = async () => {
 			if (result === "win" && player) {
 				if (character) {
@@ -118,7 +119,7 @@ export default function Page({
 		finish();
 	}, [character]);
 
-	return (
+    return (
 		<div>
 			{player && (
 				<div className="flex justify-between w-3/5 m-[auto] pt-5 ">

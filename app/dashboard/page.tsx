@@ -2,26 +2,27 @@
 import { getPlayers, deletePlayer, updateRoom, deleteRoom } from "../lib/data";
 import Create from "../ui/dashboard/create";
 import { Player, SelectItem } from "../lib/utils";
-import { Suspense, useState } from "react";
+import { Suspense, useState, use } from "react";
 import Map from "../ui/map";
 
-export default function Page({
-	searchParams,
-}: {
-	searchParams?: {
-		id: string;
-		name: string;
-	};
-}) {
-	const id = searchParams?.id;
-	const name = searchParams?.name;
-	const [players, setPlayers] = useState<Player[]>();
-	const [roomStatus, setRoomStatus] = useState<string>();
-	const [showMap, setShowMap] = useState<SelectItem[]>();
-	const [showCharacter, setShowCharacter] = useState<string>();
-	const [fresh, setFresh] = useState<number>(0);
+export default function Page(
+    props: {
+        searchParams: Promise<{
+            id: string;
+            name: string;
+        }>;
+    }
+) {
+    const searchParams = use(props.searchParams);
+    const id = searchParams?.id;
+    const name = searchParams?.name;
+    const [players, setPlayers] = useState<Player[]>();
+    const [roomStatus, setRoomStatus] = useState<string>();
+    const [showMap, setShowMap] = useState<SelectItem[]>();
+    const [showCharacter, setShowCharacter] = useState<string>();
+    const [fresh, setFresh] = useState<number>(0);
 
-	function refreshPlay() {
+    function refreshPlay() {
 		const refresh = async () => {
 			if (id && name) {
 				const fetchedPlayers = await getPlayers(name);
@@ -31,13 +32,13 @@ export default function Page({
 		refresh();
 	}
 
-	function handleDelete(name: string) {
+    function handleDelete(name: string) {
 		const action = async () => {
 			await deletePlayer(name);
 		};
 		action();
 	}
-	function handleDeleteGame() {
+    function handleDeleteGame() {
 		if (name) {
 			const action = async () => {
 				await deleteRoom(name);
@@ -46,7 +47,7 @@ export default function Page({
 		}
 	}
 
-	function handleChangeStatus(status: string) {
+    function handleChangeStatus(status: string) {
 		if (name) {
 			const update = async () => {
 				await updateRoom(status, name);
@@ -56,7 +57,7 @@ export default function Page({
 		}
 	}
 
-	return (
+    return (
 		<main className="w-full h-screen px-10 p-5 text-center">
 			{!id && (
 				<Suspense>
