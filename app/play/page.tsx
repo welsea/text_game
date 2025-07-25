@@ -16,7 +16,7 @@ export default function Page(
     const searchParams = use(props.searchParams);
     const name = searchParams.name;
     const room = searchParams.room;
-    const characters: string[] = ["Traveler", "King"];
+    const characters: string[] = ["Frankenstein", "Monster"];
 
     const [character, setCharacter] = useState<string>();
     const [map, setMap] = useState<any>();
