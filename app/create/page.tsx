@@ -24,7 +24,7 @@ export default function Page({
   const [selectWord, setSelectWord] = useState<string>();
   const [selected, setSelected] = useState<SelectItem[]>([]);
   const [character, setCharacter] = useState<string>();
-  const characters: string[] = ["Traveler", "King"];
+  const characters: string[] = ["Frankenstein", "Monster"];
   const [fresh, setFresh] = useState<number>(0)
   const [show, setShow] = useState<boolean>(false);
   const functions: FunctionItem[] = [
@@ -110,7 +110,7 @@ export default function Page({
 
   return (
     <main className="px-2 py-2">
-      <div className="flex justify-start items-start px-8">
+      <div className="px-8">
         <TextArea
           handleSelect={handleSelectWord}
           selected={selected.map((item) => item.word)}
