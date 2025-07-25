@@ -132,14 +132,13 @@ export default function Page({
 			)}
 			{finishAll && (
 				<div className="text-center text-lg mt-2">
-					Your played all the maps, continue play the score won't
-					change.
+					You have played all the maps, continue playing won't change the score.
 				</div>
 			)}
 			{map && (
 				<div className="">
 					<div className="text-center mt-2">
-						<span className="mr-2">Chance left: {chance}</span>
+						<span className="mr-2">Chances left: {chance}</span>
 						<button
 							className={`border border-gray-700 px-1 py-1 mr-2 rounded-md ${
 								chance < 1
